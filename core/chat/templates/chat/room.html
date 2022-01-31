@@ -1,0 +1,76 @@
+{% extends 'chat/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<script>
+	$(document).ready(function(){
+
+		setInterval(function(){
+			$.ajax({
+				type: 'GET',
+				url: "/messageLoader/{{room.id}}/",
+				success: function(response){
+					$("#display").empty();
+					for (var key in response.messages ){
+						var temp = "<div class='container bg-light my-2 rounded'><b>"+response.messages[key].writer+"<hr></b><p>"+response.messages[key].message+"</p><div class='d-flex justify-content-end'><span class='time-left text-end'>"+response.messages[key].created+"</span></div></div>"
+						$("#display").append(temp);
+					}
+				},
+				error: function(response){
+
+					alert('Error')
+				}
+			});
+		},1000);
+	})
+
+</script>
+<h1>Display</h1>
+
+<div class="container">
+	<h1 class="display-2 text-center">Room: {{room.title}}</h1>
+	<div id="display" class="border rounded bg-dark p-2">
+		
+	</div>
+		<form id="commentSubmit" class="text-light">
+			{% csrf_token %}
+			{{form|crispy}}
+			<input id="roomID" type="hidden" name="roomID" value="{{room.id}}" />
+			<input id="username" type="hidden" name="username" value="{{username}}" />
+
+			<input class="mt-2 btn btn-light rounded-pill" type="submit" value="Send">
+		</form>
+			
+
+
+
+
+</div>
+<script type="text/javascript">
+	
+	$(document).on('submit','#commentSubmit',function(e){
+		e.preventDefault();
+
+		$.ajax({
+
+
+			type:'POST',
+			url:'/send/',
+			data:{
+				username:$('#username').val(),
+				roomID:$('#roomID').val(),
+				message:$('#id_message').val(),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+			},
+			success: function(data){
+
+					//alert(data)
+			}
+		});
+			document.getElementById('id_message').value = ''
+
+	});
+
+
+</script>
+{% endblock %}

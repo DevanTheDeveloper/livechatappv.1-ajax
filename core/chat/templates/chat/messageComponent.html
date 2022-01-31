@@ -1,0 +1,18 @@
+% for message in room.chatMessages.all %}
+		<div class="card bg-light">
+			<div class="card-body">
+				<div class="card-title">{{message.writer}}</div>
+				
+				<p class="card-text">{{message.message}}</p>
+				<hr>
+				<div class="mt-2 d-flex justify-content-between">
+					<span class="">Updated:{{message.updated}}</span>
+					<span class="">Created: {{message.created}}</span>
+				</div>
+			</div>
+			
+
+		</div>
+
+		<br>
+		{% endfor%}

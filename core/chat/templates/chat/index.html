@@ -1,0 +1,15 @@
+{% extends 'chat/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+	<h1 class="display-2">Join A Chat Room</h1>
+
+		<form class="border border-4 border-mute rounded shadow p-2" method="POST" action="{% url 'findRoom' %} ">
+			{% csrf_token %}
+			{{form|crispy}}
+
+			<button class="btn btn-dark rounded-pill mt-2" type="submit">Enter Room</button>
+		</form>
+</div>
+{% endblock %}
+ 
